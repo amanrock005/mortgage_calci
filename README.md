@@ -26,7 +26,7 @@ Users should be able to:
 ### Screenshot
 
 ![](docImg/mortgatehome.PNG) 
-![](docImg/mortagageresult.PNG) 
+![](docImg/mortgageres1.PNG) 
 ![](docImg/mortgageerror.PNG) 
 ![](docImg/mortgagemobile.PNG) 
 
