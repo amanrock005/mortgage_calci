@@ -15,11 +15,8 @@ export default function Home() {
 }
 
 // input border yellow
-// pond sign
 // input field hidding arrow
 // rounded border background
-// error field
-// calculate result
 // mobile response
 
 // mortgage amount cannot be negative

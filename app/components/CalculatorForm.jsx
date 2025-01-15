@@ -1,26 +1,78 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
+import Image from "next/image";
 import CalculatorIcon from "../assets/icon-calculator.svg";
 
-export default function CalculatorForm() {
+export default function CalculatorForm({ updateResults }) {
   const [formData, setFormData] = useState({
     amount: "",
-    term: 25,
-    rate: 5.25,
+    term: "",
+    rate: "",
     type: "Repayment",
   });
+
+  const [validationErrors, setValidationErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    // Clear validation error for the field when user starts typing
+    if (validationErrors[name]) {
+      setValidationErrors({ ...validationErrors, [name]: "" });
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    // Perform calculations and update state.
+
+    const errors = {};
+
+    // Validate fields
+    if (!formData.amount) errors.amount = "This field is required.";
+    if (!formData.term) errors.term = "This field is required.";
+    if (!formData.rate) errors.rate = "This field is required.";
+
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+      return;
+    }
+
+    const principal = parseFloat(formData.amount);
+    const annualRate = parseFloat(formData.rate) / 100;
+    const monthlyRate = annualRate / 12;
+    const totalPayments = formData.term * 12;
+
+    let monthlyPayment;
+    let totalPayment;
+
+    if (formData.type === "Repayment") {
+      monthlyPayment =
+        (principal * monthlyRate * Math.pow(1 + monthlyRate, totalPayments)) /
+        (Math.pow(1 + monthlyRate, totalPayments) - 1);
+    } else if (formData.type === "Interest Only") {
+      monthlyPayment = principal * monthlyRate;
+    }
+
+    totalPayment = monthlyPayment * totalPayments;
+
+    updateResults({
+      monthlyPayment: monthlyPayment.toFixed(2),
+      totalPayment: totalPayment.toFixed(2),
+      showResults: true,
+    });
+  };
+
+  const handleReset = () => {
+    setFormData({
+      amount: "",
+      term: "",
+      rate: "",
+      type: "Repayment",
+    });
+    setValidationErrors({});
+    updateResults({ showResults: false });
   };
 
   return (
@@ -28,16 +80,25 @@ export default function CalculatorForm() {
       onSubmit={handleSubmit}
       className="w-1/2 p-8 bg-gray-50 border-r border-gray-200"
     >
-      <h2 className="text-2xl font-bold mb-6 text-black">
-        Mortgage Calculator
-      </h2>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-black">Mortgage Calculator</h2>
+        <button
+          type="button"
+          onClick={handleReset}
+          className="text-sm text-gray-500 hover:underline"
+        >
+          Clear All
+        </button>
+      </div>
       <div className="space-y-4">
         <div className="relative">
           <label className="block text-gray-700">Mortgage Amount</label>
           <div className="flex items-center">
             <span
-              className="absolute left-2 text-gray-500 bg-blue-100 p-2 rounded-l-md"
-              id="currency-symbol"
+              className={`absolute left-0 p-2 rounded-l-md ${
+                validationErrors.amount ? "bg-red-500" : "bg-yellow-500"
+              }`}
+              id="currency-symbol text-black"
             >
               £
             </span>
@@ -46,7 +107,6 @@ export default function CalculatorForm() {
               name="amount"
               value={formData.amount}
               onChange={handleChange}
-              placeholder="Amount"
               className="w-full pl-10 p-2 border rounded-r-md appearance-none focus:outline-none"
               style={{
                 "-webkit-appearance": "none",
@@ -55,10 +115,23 @@ export default function CalculatorForm() {
               }}
             />
           </div>
+          {validationErrors.amount && (
+            <p className="text-sm text-red-500 mt-1">
+              {validationErrors.amount}
+            </p>
+          )}
         </div>
         <div className="flex space-x-4">
-          <div>
+          <div className="relative">
             <label className="block text-gray-700">Mortgage Term</label>
+            <span
+              className={`absolute right-0 p-2 rounded-r-md ${
+                validationErrors.term ? "bg-red-500" : "bg-yellow-500"
+              }`}
+              id="currency-symbol text-black"
+            >
+              Years
+            </span>
             <input
               type="number"
               name="term"
@@ -66,9 +139,23 @@ export default function CalculatorForm() {
               onChange={handleChange}
               className="w-full p-2 border rounded"
             />
+            {validationErrors.term && (
+              <p className="text-sm text-red-500 mt-1">
+                {validationErrors.term}
+              </p>
+            )}
           </div>
-          <div>
+
+          <div className="relative">
             <label className="block text-gray-700">Interest Rate</label>
+            <span
+              className={`absolute right-0 p-2 rounded-r-md ${
+                validationErrors.rate ? "bg-red-500" : "bg-yellow-500"
+              }`}
+              id="currency-symbol text-black"
+            >
+              %
+            </span>
             <input
               type="number"
               name="rate"
@@ -76,11 +163,16 @@ export default function CalculatorForm() {
               onChange={handleChange}
               className="w-full p-2 border rounded"
             />
+            {validationErrors.rate && (
+              <p className="text-sm text-red-500 mt-1">
+                {validationErrors.rate}
+              </p>
+            )}
           </div>
         </div>
         <div>
           <label className="block text-gray-700">Mortgage Type</label>
-          <div className="flex  flex-col space-y-4 mt-5">
+          <div className="flex flex-col space-y-4 mt-5">
             <label
               className={`flex items-center px-4 py-2 border rounded-md cursor-pointer ${
                 formData.type === "Repayment" ? "bg-yellow-400" : "bg-gray-100"
@@ -119,7 +211,7 @@ export default function CalculatorForm() {
       </div>
       <button
         type="submit"
-        className=" flex items-center justify-center mt-6 w-full bg-yellow-400 hover:bg-yellow-500 py-2 rounded-full text-black"
+        className="flex items-center justify-center mt-6 w-full bg-yellow-400 hover:bg-yellow-500 py-2 rounded-full text-black"
       >
         <Image
           src={CalculatorIcon}
