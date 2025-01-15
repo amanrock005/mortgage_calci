@@ -37,7 +37,7 @@ export default function ResultsSection({ results }) {
           £{results.monthlyPayment}
         </h1>
         <p className="mt-4 text-sm text-gray-300">
-          Total you'll repay over the term:{" "}
+          Total you&apos;ll repay over the term:{" "}
           <span className="text-white font-bold">£{results.totalPayment}</span>
         </p>
       </div>
