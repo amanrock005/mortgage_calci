@@ -12,7 +12,7 @@ export default function MortgageCalculator() {
   });
 
   return (
-    <div className="bg-white rounded-lg shadow-lg flex w-full max-w-4xl overflow-hidden">
+    <div className="bg-white rounded-lg shadow-lg flex flex-col md:flex-row w-full max-w-4xl overflow-hidden">
       <CalculatorForm updateResults={setResults} />
       <ResultsSection results={results} />
     </div>

@@ -78,10 +78,12 @@ export default function CalculatorForm({ updateResults }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-1/2 p-8 bg-gray-50 border-r border-gray-200"
+      className="w-full md:w-1/2 p-6 bg-white border-b md:border-b-0 md:border-r border-gray-200"
     >
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-black">Mortgage Calculator</h2>
+        <h2 className="text-xl md:text-2xl font-bold text-black">
+          Mortgage Calculator
+        </h2>
         <button
           type="button"
           onClick={handleReset}
@@ -90,6 +92,7 @@ export default function CalculatorForm({ updateResults }) {
           Clear All
         </button>
       </div>
+
       <div className="space-y-4">
         <div className="relative">
           <label className="block text-gray-700">Mortgage Amount</label>
@@ -97,8 +100,7 @@ export default function CalculatorForm({ updateResults }) {
             <span
               className={`absolute left-0 p-2 rounded-l-md ${
                 validationErrors.amount ? "bg-red-500" : "bg-yellow-500"
-              }`}
-              id="currency-symbol text-black"
+              } text-black`}
             >
               £
             </span>
@@ -107,12 +109,7 @@ export default function CalculatorForm({ updateResults }) {
               name="amount"
               value={formData.amount}
               onChange={handleChange}
-              className="w-full pl-10 p-2 border rounded-r-md appearance-none focus:outline-none"
-              style={{
-                "-webkit-appearance": "none",
-                "-moz-appearance": "textfield",
-                appearance: "none",
-              }}
+              className="w-full pl-10 p-2 border rounded-r-md focus:outline-none"
             />
           </div>
           {validationErrors.amount && (
@@ -121,24 +118,26 @@ export default function CalculatorForm({ updateResults }) {
             </p>
           )}
         </div>
-        <div className="flex space-x-4">
-          <div className="relative">
+
+        <div className="flex flex-col md:flex-row md:space-x-4">
+          <div className="relative w-full">
             <label className="block text-gray-700">Mortgage Term</label>
-            <span
-              className={`absolute right-0 p-2 rounded-r-md ${
-                validationErrors.term ? "bg-red-500" : "bg-yellow-500"
-              }`}
-              id="currency-symbol text-black"
-            >
-              Years
-            </span>
-            <input
-              type="number"
-              name="term"
-              value={formData.term}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-            />
+            <div className="relative">
+              <input
+                type="number"
+                name="term"
+                value={formData.term}
+                onChange={handleChange}
+                className="w-full p-2 border rounded focus:outline-none"
+              />
+              <span
+                className={`absolute right-0 p-2 rounded-r-md ${
+                  validationErrors.term ? "bg-red-500" : "bg-yellow-500"
+                } text-black`}
+              >
+                Years
+              </span>
+            </div>
             {validationErrors.term && (
               <p className="text-sm text-red-500 mt-1">
                 {validationErrors.term}
@@ -146,23 +145,24 @@ export default function CalculatorForm({ updateResults }) {
             )}
           </div>
 
-          <div className="relative">
+          <div className="relative w-full mt-4 md:mt-0">
             <label className="block text-gray-700">Interest Rate</label>
-            <span
-              className={`absolute right-0 p-2 rounded-r-md ${
-                validationErrors.rate ? "bg-red-500" : "bg-yellow-500"
-              }`}
-              id="currency-symbol text-black"
-            >
-              %
-            </span>
-            <input
-              type="number"
-              name="rate"
-              value={formData.rate}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-            />
+            <div className="relative">
+              <input
+                type="number"
+                name="rate"
+                value={formData.rate}
+                onChange={handleChange}
+                className="w-full p-2 border rounded focus:outline-none"
+              />
+              <span
+                className={`absolute right-0 p-2 rounded-r-md ${
+                  validationErrors.rate ? "bg-red-500" : "bg-yellow-500"
+                } text-black`}
+              >
+                %
+              </span>
+            </div>
             {validationErrors.rate && (
               <p className="text-sm text-red-500 mt-1">
                 {validationErrors.rate}
@@ -170,9 +170,10 @@ export default function CalculatorForm({ updateResults }) {
             )}
           </div>
         </div>
+
         <div>
           <label className="block text-gray-700">Mortgage Type</label>
-          <div className="flex flex-col space-y-4 mt-5">
+          <div className="flex flex-col space-y-4 mt-4">
             <label
               className={`flex items-center px-4 py-2 border rounded-md cursor-pointer ${
                 formData.type === "Repayment" ? "bg-yellow-400" : "bg-gray-100"
@@ -188,7 +189,6 @@ export default function CalculatorForm({ updateResults }) {
               />
               Repayment
             </label>
-
             <label
               className={`flex items-center px-4 py-2 border rounded-md cursor-pointer ${
                 formData.type === "Interest Only"
@@ -209,9 +209,10 @@ export default function CalculatorForm({ updateResults }) {
           </div>
         </div>
       </div>
+
       <button
         type="submit"
-        className="flex items-center justify-center mt-6 w-full bg-yellow-400 hover:bg-yellow-500 py-2 rounded-full text-black"
+        className="flex items-center justify-center mt-6 w-full bg-yellow-400 hover:bg-yellow-500 py-2 rounded-full font-bold text-black"
       >
         <Image
           src={CalculatorIcon}
