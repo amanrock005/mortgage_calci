@@ -15,7 +15,7 @@ export default function ResultsSection({ results }) {
           />
           <h3 className="text-lg font-semibold mt-5">Results shown here</h3>
           <p className="text-sm mt-5">
-            Complete the form and click "Calculate Repayments" to see your
+            Complete the form and click &quot;Calculate Repayments&quot; to see your
             monthly repayments.
           </p>
         </div>
