@@ -27,8 +27,8 @@ Users should be able to:
 
 ![](docImg/mortgatehome.PNG) 
 ![](docImg/mortagageresult.PNG) 
-![](mortgageerror.PNG) 
-![](mortgagemobile.PNG) 
+![](docImg/mortgageerror.PNG) 
+![](docImg/mortgagemobile.PNG) 
 
 ### Links
 
